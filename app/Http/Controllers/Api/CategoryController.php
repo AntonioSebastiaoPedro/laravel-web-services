@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(Category $category, Request $request)
+    private $category;
+    public function __construct(Category $category) {
+        $this->category = $category;
+    }
+    
+    public function index(Request $request)
     {
-        $category = $category->getResults($request->name);
+        $category = $this->category->getResults($request->name);
 
         return response()->json($category);
     }
