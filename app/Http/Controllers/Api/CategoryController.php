@@ -19,4 +19,11 @@ class CategoryController extends Controller
 
         return response()->json($category);
     }
+
+    public function store(Request $request)
+    {
+        $category = $this->category->create($request->all());
+
+        return response()->json($category, 201);
+    }
 }
