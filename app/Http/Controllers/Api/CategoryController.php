@@ -38,8 +38,7 @@ class CategoryController extends Controller
 
     public function update(StoreUpdateCategoryRequest $request, $id)
     {
-        $category = $this->category->find($id);
-        if(!$category)
+        if(!$category = $this->category->find($id))
             return response()->json(['error' => 'Not found'], 404);
 
         $category->update($request->all());
@@ -48,8 +47,7 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        $category = $this->category->find($id);
-        if(!$category)
+        if(!$category = $this->category->find($id))
             return response()->json(['error' => 'Not found'], 404);
 
         $category->delete();
