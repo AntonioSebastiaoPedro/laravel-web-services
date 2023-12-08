@@ -13,4 +13,28 @@ class Product extends Model
         'description',
         'image',
     ];
+
+    public function getResults($data, $totalPage)
+    {
+        if(!isset($data['filter']) && !isset($data['name']) && !isset($data['description']))
+            return $this->paginate($totalPage);
+
+        return $this->where(function($query) use ($data){
+                    if(isset($data['filter'])){
+                        $filter = $data['filter'];
+                        $query->where('name', 'LIKE', $filter);
+                        $query->orWhere('description', 'LIKE', "%{$filter}%");
+                    }
+
+                    if(isset($data['description'])){
+                        $description = $data['description'];
+                        $query->where('description', 'LIKE', "%{$description}%");
+                    }
+
+                    if(isset($data['name'])){
+                        $name = $data['name'];
+                        $query->where('name', 'LIKE', "%{$name}%");
+                    }
+                })->paginate();
+    }
 }
