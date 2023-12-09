@@ -22,7 +22,7 @@ class StoreUpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:categories,name,'.$this->segment(3).',id'
+            'name' => 'required|unique:categories,name,except,id'
         ];
     }
 }
