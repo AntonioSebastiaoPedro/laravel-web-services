@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class ProductController extends Controller
         return response()->json($products);
     }
     
-    public function store(Request $request)
+    public function store(StoreUpdateProductRequest $request)
     {
         $product = $this->product->create($request->all());
 
@@ -36,7 +37,7 @@ class ProductController extends Controller
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateProductRequest $request, string $id)
     {
         if(!$product = $this->product->find($id)){
             return response()->json(['error' => 'Not Found'], 404);
