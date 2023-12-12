@@ -59,11 +59,7 @@ class ProductController extends Controller
         $image = $request->file('image');
         if($request->hasFile('image') && $image->isValid()){
             if($product->image){
-                $name = $product->image;
-                $imagePath = public_path('products/'.$name);
-                if(file_exists($imagePath)){
-                    unlink($imagePath);
-                }
+                $this->deleteImage($product);
             }
             $nameFile = str()->uuid() . "." . $image->extension();
             $data['image'] = $nameFile;
@@ -83,14 +79,19 @@ class ProductController extends Controller
             return response()->json(['error' => 'Not Found'], 404);
         }
         if($product->image){
-                $name = $product->image;
-                $imagePath = public_path('products/'.$name);
-                if(file_exists($imagePath)){
-                    unlink($imagePath);
-                }
-            }
+            $this->deleteImage($product);
+        }
         $product->delete();
 
         return response()->json(['success' => true], 204);
+    }
+
+    private function deleteImage(Product $product)
+    {
+        $name = $product->image;
+        $imagePath = public_path('products/'.$name);
+        if(file_exists($imagePath)){
+            unlink($imagePath);
+        }
     }
 }
