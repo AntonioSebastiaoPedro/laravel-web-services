@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUpdateProductRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class StoreUpdateProductRequest extends FormRequest
     {
         return [
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|min:3|max:100|unique:products,name,except,id',
+            'name' => [
+                'required',
+                'min:3',
+                'max:100',
+                Rule::unique('products', 'name')->ignore($this->segment(3))
+            ],
             'description' => 'max:255',
             'image' => 'image',
         ];

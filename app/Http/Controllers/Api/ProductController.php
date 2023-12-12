@@ -55,7 +55,24 @@ class ProductController extends Controller
         if(!$product = $this->product->find($id)){
             return response()->json(['error' => 'Not Found'], 404);
         }
-        $product->update($request->all());
+        $data = $request->validated();
+        $image = $request->file('image');
+        if($request->hasFile('image') && $image->isValid()){
+            if($product->image){
+                $name = $product->image;
+                $imagePath = public_path('products/'.$name);
+                if(file_exists($imagePath)){
+                    unlink($imagePath);
+                }
+            }
+            $nameFile = str()->uuid() . "." . $image->extension();
+            $data['image'] = $nameFile;
+            $upload = $image->move('products', $nameFile);
+            if(!$upload){
+                return response()->json(['error' => 'Upload Failed'], 500);
+            }
+        }
+        $product->update($data);
 
         return response()->json($product);
     }
