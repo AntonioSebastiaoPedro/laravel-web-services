@@ -13,12 +13,12 @@ class Category extends Model
     use SoftDeletes;
     protected $fillable = ['name'];
 
-    public function getResults($name = null)
+    public function getResults($name = null, $totalPage)
     {
         if(!$name)
-            return $this->get();
+            return $this->paginate($totalPage);
 
-        return $this->where('name', 'LIKE', "%{$name}%")->get();
+        return $this->where('name', 'LIKE', "%{$name}%")->paginate($totalPage);
     }
 
     public function products(): HasMany

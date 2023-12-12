@@ -16,7 +16,7 @@ class CategoryController extends Controller
     
     public function index(Request $request)
     {
-        $category = $this->category->getResults($request->name);
+        $category = $this->category->getResults($request->name, $this->totalPage);
 
         return response()->json($category);
     }
