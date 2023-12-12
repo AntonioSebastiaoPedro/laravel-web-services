@@ -25,7 +25,7 @@ class ProductController extends Controller
     
     public function store(StoreUpdateProductRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $image = $request->file('image');
         if($request->hasFile('image') && $image->isValid()){
             $nameFile = str()->uuid() . '.' . $image->extension();
