@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 */
+Route::get('categories/{id}/products', [CategoryController::class, 'products']);
 Route::apiResource('categories', CategoryController::class);
 
 Route::apiResource('products', ProductController::class);
