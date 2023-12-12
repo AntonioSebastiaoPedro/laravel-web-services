@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCategoryRequest;
@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    private $category;
+    private $category, $totalPage = 10;
     public function __construct(Category $category) {
         $this->category = $category;
     }
     
     public function index(Request $request)
     {
-        $category = $this->category->getResults($request->name);
+        $category = $this->category->getResults($request->name, $this->totalPage);
 
         return response()->json($category);
     }
@@ -52,5 +52,18 @@ class CategoryController extends Controller
 
         $category->delete();
         return response()->json(['success' => true], 204);
+    }
+
+    public function products($id)
+    {
+        if(!$category = $this->category->find($id)){
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+        $products = $category->products()->paginate($this->totalPage);
+
+        return response()->json([
+            'category' => $category,
+            'products' => $products
+        ]);
     }
 }
