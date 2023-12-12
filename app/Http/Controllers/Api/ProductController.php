@@ -82,6 +82,13 @@ class ProductController extends Controller
         if(!$product = $this->product->find($id)){
             return response()->json(['error' => 'Not Found'], 404);
         }
+        if($product->image){
+                $name = $product->image;
+                $imagePath = public_path('products/'.$name);
+                if(file_exists($imagePath)){
+                    unlink($imagePath);
+                }
+            }
         $product->delete();
 
         return response()->json(['success' => true], 204);
